@@ -60,7 +60,7 @@ app.post('/notes', (request, response) => {
   const note = {
     content: body.content,
     important: body.important || false,
-    date: body.date || new Date(),
+    date: new Date(),
     id: generateId()
   }
 
