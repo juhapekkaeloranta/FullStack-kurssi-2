@@ -7,7 +7,7 @@
     "start": "node index.js",
     "watch": "node_modules/.bin/nodemon index.js"
   },
-  "author": "Matti Luukkainen",
+  "author": "Juha-Pekka Moilanen",
   "license": "MIT",
   "dependencies": {
     "express": "^4.16.2"
