@@ -26,6 +26,18 @@ const deleteIdFromContacts = (id) => {
   persons = persons.filter(person => person.id !== id)
 }
 
+const idExistsInContacts = (idToFind) => {
+  return persons.find(person => person.id === idToFind)
+}
+
+const nameExistsInContacts = (nameToFind) => {
+  return persons.find(person => person.name === nameToFind)
+}
+ 
+const generateId = () => {
+  const maxId = persons.length > 0 ? persons.map(n => n.id).sort().reverse()[0] : 1
+  return maxId + 1
+}
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
@@ -46,19 +58,13 @@ app.get('/api/persons', (req, res) => {
 
 app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  const person = persons.find(note => note.id === id)
 
-  if (person) {
+  if (idExistsInContacts(id)) {
     response.json(person)
   } else {
     response.status(404).end()
   }
 })
-
-const generateId = () => {
-  const maxId = persons.length > 0 ? persons.map(n => n.id).sort().reverse()[0] : 1
-  return maxId + 1
-}
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
@@ -85,10 +91,7 @@ app.post('/api/persons', (request, response) => {
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   
-  const idIsExists = persons.find(person => person.id === id)
-  console.log(idIsExists)
-  
-  if (idIsExists) {
+  if (idExistsInContacts(id)) {
     deleteIdFromContacts(id)
     response.status(204).end()
   } else {
