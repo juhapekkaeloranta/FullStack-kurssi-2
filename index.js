@@ -4,24 +4,21 @@ const bodyParser = require('body-parser')
 
 app.use(bodyParser.json())
 
-let notes = [
+let persons = [
   {
-    id: 1,
-    content: 'HTML on helppoa',
-    date: '2017-12-10T17:30:31.098Z',
-    important: true
+    "name": "Martti Tienari",
+    "number": "040-123456",
+    "id": 2
   },
   {
-    id: 2,
-    content: 'Selain pystyy suorittamaan vain javascriptiä',
-    date: '2017-12-10T18:39:34.091Z',
-    important: false
+    "name": "Arto Järvinen",
+    "number": "040-12312300",
+    "id": 5
   },
   {
-    id: 3,
-    content: 'HTTP-protokollan tärkeimmät metodit ovat GET ja POST',
-    date: '2017-12-10T19:20:14.298Z',
-    important: true
+    "name": "Arto Hellas",
+    "number": "123",
+    "id": 7
   }
 ]
 
@@ -30,27 +27,27 @@ app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
 
-app.get('/notes', (req, res) => {
-  res.json(notes)
+app.get('/api/persons', (req, res) => {
+  res.json(persons)
 })
 
-app.get('/notes/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  const note = notes.find(note => note.id === id)
+  const person = persons.find(note => note.id === id)
 
-  if (note) {
-    response.json(note)
+  if (person) {
+    response.json(person)
   } else {
     response.status(404).end()
   }
 })
 
 const generateId = () => {
-  const maxId = notes.length > 0 ? notes.map(n => n.id).sort().reverse()[0] : 1
+  const maxId = persons.length > 0 ? persons.map(n => n.id).sort().reverse()[0] : 1
   return maxId + 1
 }
 
-app.post('/notes', (request, response) => {
+app.post('/api/persons', (request, response) => {
   const body = request.body
 
   if (body.content === undefined) {
@@ -64,14 +61,14 @@ app.post('/notes', (request, response) => {
     id: generateId()
   }
 
-  notes = notes.concat(note)
+  persons = persons.concat(note)
 
   response.json(note)
 })
 
-app.delete('/notes/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  notes = notes.filter(note => note.id !== id)
+  persons = persons.filter(note => note.id !== id)
 
   response.status(204).end()
 })
