@@ -63,16 +63,16 @@ app.post('/api/persons', (request, response) => {
     return response.status(400).json({ error: 'content missing' })
   }
 
-  const note = {
+  const newPerson = {
     content: body.content,
     important: body.important || false,
     date: new Date(),
     id: generateId()
   }
 
-  persons = persons.concat(note)
+  persons = persons.concat(newPerson)
 
-  response.json(note)
+  response.json(newPerson)
 })
 
 app.delete('/api/persons/:id', (request, response) => {
