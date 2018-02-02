@@ -59,14 +59,17 @@ const generateId = () => {
 app.post('/api/persons', (request, response) => {
   const body = request.body
 
-  if (body.content === undefined) {
-    return response.status(400).json({ error: 'content missing' })
+  if (body.name === undefined) {
+    return response.status(400).json({ error: 'name missing' })
+  }
+
+  if (body.number === undefined) {
+    return response.status(400).json({ error: 'number missing' })
   }
 
   const newPerson = {
-    content: body.content,
-    important: body.important || false,
-    date: new Date(),
+    name: body.name,
+    number: body.number,
     id: generateId()
   }
 
@@ -79,7 +82,13 @@ app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   persons = persons.filter(note => note.id !== id)
 
-  response.status(204).end()
+  if (persons) {
+    response.status(400).json({ error: 'not supported' })
+    //response.status(204).end()
+  } else {
+    response.status(400).json({ error: 'not supported' })
+    //response.status(404).end()
+  }
 })
 
 const PORT = 3001
