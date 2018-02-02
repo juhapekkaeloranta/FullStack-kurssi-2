@@ -22,6 +22,10 @@ let persons = [
   }
 ]
 
+const deleteIdFromContacts = (id) => {
+  persons = persons.filter(person => person.id !== id)
+}
+
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
@@ -80,14 +84,15 @@ app.post('/api/persons', (request, response) => {
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  persons = persons.filter(note => note.id !== id)
-
-  if (persons) {
-    response.status(400).json({ error: 'not supported' })
-    //response.status(204).end()
+  
+  const idIsExists = persons.find(person => person.id === id)
+  console.log(idIsExists)
+  
+  if (idIsExists) {
+    deleteIdFromContacts(id)
+    response.status(204).end()
   } else {
-    response.status(400).json({ error: 'not supported' })
-    //response.status(404).end()
+    response.status(404).end()
   }
 })
 
