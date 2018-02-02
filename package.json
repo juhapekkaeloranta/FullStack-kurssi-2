@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "watch": "node_modules/.bin/nodemon index.js"  
+    "watch": "node_modules/.bin/nodemon index.js"
   },
   "author": "Matti Luukkainen",
   "license": "MIT",
