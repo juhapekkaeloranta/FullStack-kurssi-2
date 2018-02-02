@@ -70,11 +70,15 @@ app.post('/api/persons', (request, response) => {
   const body = request.body
 
   if (body.name === undefined) {
-    return response.status(400).json({ error: 'name missing' })
+    return response.status(403).json({ error: 'name missing!' })
   }
 
   if (body.number === undefined) {
-    return response.status(400).json({ error: 'number missing' })
+    return response.status(403).json({ error: 'number missing!' })
+  }
+
+  if (nameExistsInContacts(body.name)) {
+    return response.status(403).json({ error: 'duplicate name!' })
   }
 
   const newPerson = {
