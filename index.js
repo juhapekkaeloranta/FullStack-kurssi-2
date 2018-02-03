@@ -63,10 +63,11 @@ app.get('/info', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
+  console.log('trying to get all')
   Contact
     .find({})
-    .then(all => {
-      res.json(all)
+    .then(result => {
+      res.json(result)
     })
 })
 

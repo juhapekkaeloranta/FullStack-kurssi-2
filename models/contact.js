@@ -63,7 +63,7 @@ const main = () => {
   const parameters = process.argv.slice(2)
 
   if (parameters.length === 0) {
-    showAllContacts()
+    console.log(getAllContacts())
   } else if (parameters.length === 2) {
     createNewContact(parameters[0], parameters[1])
   } else {
@@ -71,6 +71,6 @@ const main = () => {
   }
 }
 
-main()
+//main()
 
 module.exports = Contact
