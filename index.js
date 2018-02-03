@@ -3,6 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
+const Contact = require('./models/contact.js')
 
 morgan.token('reqBody', function getCustom (req) {
   return JSON.stringify(req.body)
