@@ -69,6 +69,10 @@ app.get('/api/persons', (req, res) => {
     .then(result => {
       res.json(result)
     })
+    .catch(error => {
+      console.log(error)
+      // ...
+    })
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -96,15 +100,23 @@ app.post('/api/persons', (request, response) => {
     return response.status(403).json({ error: 'duplicate name!' })
   }
 
-  const newPerson = {
+  const newContact = new Contact({
     name: body.name,
-    number: body.number,
-    id: generateId()
-  }
-
-  persons = persons.concat(newPerson)
-
-  response.json(newPerson)
+    number: body.number
+  })
+  newContact
+    .save()
+    .then(res => {
+      console.log(
+        'Lisätty luetteloon yhteystieto\n  ' +
+        newContact.name + ': ' + newContact.number
+      )
+      response.json(res)
+    })
+    .catch(error => {
+      console.log(error)
+      // ...
+    })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
