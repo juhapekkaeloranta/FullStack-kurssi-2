@@ -8,13 +8,15 @@ mongoose.Promise = global.Promise;
 
 const Contact = mongoose.model('Contact', {
   name: String,
-  number: String
+  number: String,
+  id: Number
 })
 
-const createNewContact = (pName, pNumber) => {
+const createNewContact = (pName, pNumber, pId) => {
   new Contact({
     name: pName,
-    number: pNumber
+    number: pNumber,
+    id: pId
   })
     .save()
     .then(response => {
@@ -58,6 +60,19 @@ const formatContacts = (pContacts) => {
   })
   return resultString
 }
+
+const deleteContact = (pId) => {
+  Contact
+    .findByIdAndRemove(pId)
+    .then(result => {
+      console.log(result)
+      //response.status(204).end()
+    })
+    .catch(error => {
+      console.log('failed')
+      //response.status(400).send({ error: 'malformatted id' })
+    })
+} 
 
 const main = () => {
   const parameters = process.argv.slice(2)

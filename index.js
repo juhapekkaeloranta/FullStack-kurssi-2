@@ -102,7 +102,8 @@ app.post('/api/persons', (request, response) => {
 
   const newContact = new Contact({
     name: body.name,
-    number: body.number
+    number: body.number,
+    id: generateId()
   })
   newContact
     .save()
@@ -120,14 +121,18 @@ app.post('/api/persons', (request, response) => {
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
+  const pId = Number(request.params.id)
   
-  if (idExistsInContacts(id)) {
-    deleteIdFromContacts(id)
-    response.status(204).end()
-  } else {
-    response.status(404).end()
-  }
+  Contact
+    .remove({id: pId})
+    .then(result => {
+      console.log(result)
+      response.status(204).end()
+    })
+    .catch(error => {
+      console.log('failed delete')
+      response.status(400).send({ error: 'malformatted id' })
+    })
 })
 
 const PORT = process.env.PORT || 3001
