@@ -26,7 +26,7 @@ const createNewContact = (pName, pNumber) => {
     })
 }
 
-const getAllContacts = () => {
+const showAllContacts = () => {
   const listAll = []
   Contact
   .find({})
@@ -38,6 +38,16 @@ const getAllContacts = () => {
     mongoose.connection.close()
     console.log(formatContacts(listAll))
     return 'palauta lista async odottajalle'
+  })
+}
+
+const getAllContacts = () => {
+  const listAll = []
+  Contact
+  .find({})
+  .then(result => {
+    mongoose.connection.close()
+    return result
   })
 }
 
@@ -53,12 +63,14 @@ const main = () => {
   const parameters = process.argv.slice(2)
 
   if (parameters.length === 0) {
-    getAllContacts()
+    showAllContacts()
   } else if (parameters.length === 2) {
     createNewContact(parameters[0], parameters[1])
   } else {
     console.log('error: wrong number of parameters')
   }
 }
+
+main()
 
 module.exports = Contact

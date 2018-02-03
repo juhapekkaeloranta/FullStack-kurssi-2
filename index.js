@@ -63,7 +63,11 @@ app.get('/info', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
+  Contact
+    .find({})
+    .then(all => {
+      res.json(all)
+    })
 })
 
 app.get('/api/persons/:id', (request, response) => {
