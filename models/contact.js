@@ -1,7 +1,13 @@
 const mongoose = require('mongoose')
+require('dotenv').config()
 
-// korvaa url oman tietokantasi urlilla!
-const url = 'mongodb://app-contacts:jfios84dsa@ds123258.mlab.com:23258/contacts-db'
+if (process.env.NODE_ENV === 'production') {
+  console.log('PRD');
+  url = process.env.PRD_MONGODB_URI
+} else {
+  console.log('DEV');
+  url = process.env.DEV_MONGODB_URI
+}
 
 mongoose.connect(url)
 mongoose.Promise = global.Promise;
