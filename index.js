@@ -18,6 +18,19 @@ const generateId = () => {
   return Math.floor((Math.random() * 10000000000) + 1);
 }
 
+const countContacts = () => {
+  return (
+    Contact
+      .find({})
+      .then(result => {
+        return result.length
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  )
+}
+
 const nameExistsInContacts = (nameToLook) => {
   Contact
     .find({name: nameToLook})
@@ -45,12 +58,16 @@ app.get('/', (req, res) => {
 })
 
 app.get('/info', (req, res) => {
-  const personCount = persons.length
-  const dateString = new Date().toString()
-  res.send(
-    '<p>Puhelinluettelossa on ' + personCount + ' henkilön tiedot</p>' +
-    '<p>' + dateString + '</p>'
-  )
+  const personCount = 
+    countContacts()
+    .then(response => {
+      console.log(response);
+      const dateString = new Date().toString()
+      res.send(
+        '<p>Puhelinluettelossa on ' + response + ' henkilön tiedot</p>' +
+        '<p>' + dateString + '</p>'
+      )
+    })
 })
 
 app.get('/api/persons', (req, res) => {
