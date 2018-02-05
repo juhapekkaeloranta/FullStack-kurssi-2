@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 require('dotenv').config()
+/*
 const url = ''
+
 if (process.env.NODE_ENV === 'production') {
   console.log('PRD')
   url = process.env.PRD_MONGODB_URI
@@ -8,9 +10,15 @@ if (process.env.NODE_ENV === 'production') {
   console.log('DEV')
   url = process.env.DEV_MONGODB_URI
 }
+*/
+
+const url = ((process.env.NODE_ENV === 'production')
+  ? process.env.PRD_MONGODB_URI
+  : process.env.DEV_MONGODB_URI
+)
 
 mongoose.connect(url)
-mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise
 
 const Contact = mongoose.model('Contact', {
   name: String,
@@ -18,6 +26,7 @@ const Contact = mongoose.model('Contact', {
   id: Number
 })
 
+/*
 const createNewContact = (pName, pNumber, pId) => {
   new Contact({
     name: pName,
@@ -26,6 +35,7 @@ const createNewContact = (pName, pNumber, pId) => {
   })
     .save()
     .then(response => {
+      console.log(response)
       console.log(
         'Lisätty luetteloon yhteystieto\n  ' +
         pName + ': ' + pNumber
@@ -33,32 +43,38 @@ const createNewContact = (pName, pNumber, pId) => {
       mongoose.connection.close()
     })
 }
+/*
 
+/*
 const showAllContacts = () => {
   const listAll = []
   Contact
-  .find({})
-  .then(result => {
-    result.forEach(item => {
-      //console.log(item)
-      listAll.push(item)
+    .find({})
+    .then(result => {
+      result.forEach(item => {
+        //console.log(item)
+        listAll.push(item)
+      })
+      mongoose.connection.close()
+      console.log(formatContacts(listAll))
+      return 'palauta lista async odottajalle'
     })
-    mongoose.connection.close()
-    console.log(formatContacts(listAll))
-    return 'palauta lista async odottajalle'
-  })
 }
+*/
 
+/*
 const getAllContacts = () => {
   const listAll = []
   Contact
-  .find({})
-  .then(result => {
-    mongoose.connection.close()
-    return result
-  })
+    .find({})
+    .then(result => {
+      mongoose.connection.close()
+      return result
+    })
 }
+*/
 
+/*
 const formatContacts = (pContacts) => {
   let resultString = 'Puhelinluettelo:\n'
   pContacts.forEach(item => {
@@ -66,7 +82,9 @@ const formatContacts = (pContacts) => {
   })
   return resultString
 }
+*/
 
+/*
 const deleteContact = (pId) => {
   Contact
     .findByIdAndRemove(pId)
@@ -78,9 +96,11 @@ const deleteContact = (pId) => {
       console.log('failed')
       //response.status(400).send({ error: 'malformatted id' })
     })
-} 
+}
+*/
 
-const main = () => {
+/*
+const testScript = () => {
   const parameters = process.argv.slice(2)
 
   if (parameters.length === 0) {
@@ -91,7 +111,8 @@ const main = () => {
     console.log('error: wrong number of parameters')
   }
 }
+*/
 
-//main()
+//testScript()
 
 module.exports = Contact

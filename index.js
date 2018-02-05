@@ -156,7 +156,7 @@ app.post('/api/persons', (request, response) => {
       }
     })
     .catch(error => {
-      console.log(error);
+      console.log(error)
     })
 })
 
