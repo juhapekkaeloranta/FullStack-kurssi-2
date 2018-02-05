@@ -13,40 +13,31 @@ app.use(express.static('build'))
 app.use(cors())
 app.use(morgan(':method :url :status :reqBody - :response-time ms'))
 app.use(bodyParser.json())
-
-let persons = [
-  {
-    "name": "Martti Tienari",
-    "number": "040-123456",
-    "id": 2
-  },
-  {
-    "name": "Arto Järvinen",
-    "number": "040-12312300",
-    "id": 5
-  },
-  {
-    "name": "Arto Hellas",
-    "number": "123-1",
-    "id": 7
-  }
-]
-
-const deleteIdFromContacts = (id) => {
-  persons = persons.filter(person => person.id !== id)
-}
-
-const idExistsInContacts = (idToFind) => {
-  return persons.find(person => person.id === idToFind)
-}
-
-const nameExistsInContacts = (nameToFind) => {
-  return persons.find(person => person.name === nameToFind)
-}
  
 const generateId = () => {
-  const maxId = persons.length > 0 ? persons.map(n => n.id).sort().reverse()[0] : 1
-  return maxId + 1
+  return Math.floor((Math.random() * 10000000000) + 1);
+}
+
+const nameExistsInContacts = (nameToLook) => {
+  Contact
+    .find({name: nameToLook})
+    .then(result => {
+      return result.length > 0
+    })
+    .catch(error => {
+      console.log(error)
+    })
+}
+
+const idExistsInContacts = (idToLook) => {
+  Contact
+    .find({id: idToLook})
+    .then(result => {
+      return result.length > 0
+    })
+    .catch(error => {
+      console.log(error)
+    })
 }
 
 app.get('/', (req, res) => {
@@ -86,23 +77,23 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-  const body = request.body
+  const postedObject = request.body
 
-  if (body.name === undefined) {
+  if (postedObject.name === undefined) {
     return response.status(403).json({ error: 'name missing!' })
   }
 
-  if (body.number === undefined) {
+  if (postedObject.number === undefined) {
     return response.status(403).json({ error: 'number missing!' })
   }
 
-  if (nameExistsInContacts(body.name)) {
+  if (nameExistsInContacts(postedObject.name)) {
     return response.status(403).json({ error: 'duplicate name!' })
   }
 
   const newContact = new Contact({
-    name: body.name,
-    number: body.number,
+    name: postedObject.name,
+    number: postedObject.number,
     id: generateId()
   })
   newContact
@@ -117,6 +108,26 @@ app.post('/api/persons', (request, response) => {
     .catch(error => {
       console.log(error)
       // ...
+    })
+})
+
+app.put('/api/persons/:id', (request, response) => {
+  const pId = Number(request.params.id)
+  const postedObject = request.body
+
+  //console.log('PUT not yet implemented')
+  console.log(postedObject)
+  Contact
+    .update({id: pId}, {number: postedObject.number})
+    .then(result => {
+      console.log('update success');
+      console.log(result);
+      response.status(204).end()
+    })
+    .catch(error => {
+      console.log('update failure');
+      console.log(error);
+      response.status(400).send({ error: 'update failed' })
     })
 })
 
