@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "watch": "node_modules/.bin/nodemon index.js"
+    "watch": "node_modules/.bin/nodemon index.js",
+    "lint": "node_modules/.bin/eslint ."
   },
   "author": "Juha-Pekka Moilanen",
   "license": "MIT",
@@ -17,6 +18,7 @@
     "morgan": "^1.9.0"
   },
   "devDependencies": {
+    "eslint": "^4.17.0",
     "nodemon": "^1.14.11"
   }
 }

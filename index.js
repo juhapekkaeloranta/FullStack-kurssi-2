@@ -15,7 +15,7 @@ app.use(morgan(':method :url :status :reqBody - :response-time ms'))
 app.use(bodyParser.json())
  
 const generateId = () => {
-  return Math.floor((Math.random() * 10000000000) + 1);
+  return Math.floor((Math.random() * 10000000000) + 1)
 }
 
 const countContacts = () => {
@@ -26,7 +26,7 @@ const countContacts = () => {
         return result.length
       })
       .catch(error => {
-        console.log(error);
+        console.log(error)
       })
   )
 }
