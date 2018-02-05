@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 require('dotenv').config()
-
+const url = ''
 if (process.env.NODE_ENV === 'production') {
-  console.log('PRD');
+  console.log('PRD')
   url = process.env.PRD_MONGODB_URI
 } else {
-  console.log('DEV');
+  console.log('DEV')
   url = process.env.DEV_MONGODB_URI
 }
 
