@@ -32,25 +32,29 @@ const countContacts = () => {
 }
 
 const nameExistsInContacts = (nameToLook) => {
-  Contact
-    .find({name: nameToLook})
-    .then(result => {
-      return result.length > 0
-    })
-    .catch(error => {
-      console.log(error)
-    })
+  return (
+    Contact
+      .find({name: nameToLook})
+      .then(result => {
+        return result.length > 0
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  )
 }
 
 const idExistsInContacts = (idToLook) => {
-  Contact
-    .find({id: idToLook})
-    .then(result => {
-      return result.length > 0
-    })
-    .catch(error => {
-      console.log(error)
-    })
+  return (
+    Contact
+      .find({id: idToLook})
+      .then(result => {
+        return result.length > 0
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  )
 }
 
 app.get('/', (req, res) => {
@@ -84,13 +88,21 @@ app.get('/api/persons', (req, res) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
+  const pId = Number(request.params.id)
 
-  if (idExistsInContacts(id)) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
+  Contact
+    .find({id: pId})
+    .then(result => {
+      if (result.length === 1) {
+        response.json(result)
+      } else {
+        response.status(404).json({ error: 'id not found!' })
+      }
+    })
+    .catch(error => {
+      console.log('get', pId, 'failed');
+      console.log(error);
+    })
 })
 
 app.post('/api/persons', (request, response) => {
