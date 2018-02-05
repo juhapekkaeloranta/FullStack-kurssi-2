@@ -57,6 +57,32 @@ const idExistsInContacts = (idToLook) => {
   )
 }
 
+const isValidContact = (newContactObj) => {
+  return !(newContactObj.name === undefined ||newContactObj.number === undefined)
+}
+
+const saveNewContact = (postedObject) => {
+  const newContact = new Contact({
+    name: postedObject.name,
+    number: postedObject.number,
+    id: generateId()
+  })
+  return (
+    newContact
+    .save()
+    .then(res => {
+      console.log(
+        'Lisätty luetteloon yhteystieto:\n  ' +
+        newContact.name + ': ' + newContact.number
+      )
+      return res
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  )
+}
+
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
@@ -107,36 +133,29 @@ app.get('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
   const postedObject = request.body
-
-  if (postedObject.name === undefined) {
-    return response.status(403).json({ error: 'name missing!' })
+  
+  if(!isValidContact(postedObject)) {
+    console.log('invalid object posted!');
+    return response.status(403).json({ error: 'invalid object!' })
   }
 
-  if (postedObject.number === undefined) {
-    return response.status(403).json({ error: 'number missing!' })
-  }
-
-  if (nameExistsInContacts(postedObject.name)) {
-    return response.status(403).json({ error: 'duplicate name!' })
-  }
-
-  const newContact = new Contact({
-    name: postedObject.name,
-    number: postedObject.number,
-    id: generateId()
-  })
-  newContact
-    .save()
-    .then(res => {
-      console.log(
-        'Lisätty luetteloon yhteystieto\n  ' +
-        newContact.name + ': ' + newContact.number
-      )
-      response.json(res)
+  nameExistsInContacts(postedObject.name)
+    .then(exists => {
+      if (exists === false) {
+        saveNewContact(postedObject)
+          .then(resp => {
+            console.log(resp);
+            response.json(resp)
+          })
+          .catch(error => {
+            console.log(error);
+          })
+      } else {
+        console.log('duplicate name!');
+      }
     })
     .catch(error => {
-      console.log(error)
-      // ...
+      console.log(error);
     })
 })
 
